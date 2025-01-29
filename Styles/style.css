@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+/* shared styles */
+.text-primary{
+    color: #FD6E0A;
+}
+.dark-2{
+    color: #474747;
+}
+.dark-3{
+    color: #757575;
+}
+.btn-primary{
+    background-color: #FD6E0A;
+    font-family: open sans;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    padding: 18px 35px;
+    border-radius: 5px ;
+    border: none;
+}
+.section-title{
+    font-family: open sans;
+    font-size: 35px;
+    font-weight: bold;
+    color: #181818;
+}
+.section-description{
+    font-family: open sans;
+    font-size: 18px;
+    font-weight: normal;
+    color: #757575;
+}
+.secondary-bg{
+    background-color: #FFF8F3;
+}
+.text-center{
+    text-align: center;
+}
+/* header */
+.header{
+    background-image: url(../images/developer.png),url(../images/header_bg.png);
+    background-repeat: no-repeat;
+    margin-left: 23px;
+    background-position: top left , right bottom;
+}
+/* Nav styles */
+nav{
+    display: flex;
+    font-family: open sans;
+    align-items: center ;
+    justify-content: space-between;
+    margin: 20px 230px;
+}
+nav ul{
+    display: flex;
+    align-items: center;
+}
+.nav-title{
+    font-weight: 800;
+    font-size: 45px;
+}
+nav ul li{
+    list-style: none;
+    margin-right: 51px;
+}
+nav li a{
+    text-decoration: none;
+    font-size: 20px;
+}
+nav li a button{
+    width: 150px;
+    height: 64px;
+}
+/* banner styles */
+.banner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 35px 0 230px;
+}
+.banner-content{
+    max-width: 585px;
+    height: 356px;
+}
+.banner-greetings{
+    font-size: 45px;
+    font-weight: 600;
+    font-family: open sans;
+}
+.banner-title{
+    font-size: 75px;
+    font-weight: bold;
+    font-family: open sans;
+    margin: 5px 0 20px 0;
+}
+.banner-description{
+    font-family: open sans;
+    font-weight: normal;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+.banner-profile-pic{
+    width: 584px;
+    height: 676px;
+}
+.banner .banner-content button{
+    margin-right: 30px;
+}
+
+/* main styles */
+main{
+    max-width: 1300px;
+    margin: 0 auto;
+    font-family: open sans;
+}
+main section{
+    margin-top: 130px;
+    margin-bottom: 130px;
+}
+/* about styles */
+.about{
+    border-radius: 10px;
+    padding: 130px 150px;
+    text-align: center;
+    margin-top: 130px;
+}
+.about .section-description{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.about-items{
+    display: flex;
+    justify-content: space-around;
+}
+.item-description{
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+    margin-top: 10px;
+}
+.item-title{
+    font-size: 20px;
+    font-weight: normal;
+}
+
+/* skills section style */
+
+.skills>p{
+    padding: 0 200px;
+    margin: 30px 0 50px 0;
+}
+.skills-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+}
+.skill{
+    width: 267px;
+    height: 377px;
+    border-radius: 5px;
+    padding: 30px;
+    box-shadow: 0 6px 50px 0px rgba(0, 0, 0, 0.06);
+}
