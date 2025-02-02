@@ -254,9 +254,28 @@ footer textarea{
     display: none;
 }
 @media screen and (max-width: 576px) {
-    .skills-container , .resume-container{
+    .skills-container , .resume-container , .banner , nav , nav ul{
         flex-direction: column;
         /* background-color: red; */
+    }
+    nav,nav ul{
+        gap: 20px;
+    }
+    .banner-title{
+        font-size: 35px;
+    }
+    .banner-profile-pic{
+        width: 100%;
+        height: 100%;
+    }
+    .btn-primary{
+        margin-bottom: 10px;
+    }
+    .banner{
+        margin: 30px;
+    }
+    .header{
+        background-image: none;
     }
     footer,.about,.about-items{
         flex-direction: column;
@@ -272,5 +291,8 @@ footer textarea{
     .skill {
         width: calc(100% - 60px);
         height: auto;
+    }
+    .resume-container{
+        padding: 20px;
     }
 }
