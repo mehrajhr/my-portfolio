@@ -250,3 +250,27 @@ footer textarea{
    display: flex;
    gap: 30px;
 }
+.hide{
+    display: none;
+}
+@media screen and (max-width: 576px) {
+    .skills-container , .resume-container{
+        flex-direction: column;
+        /* background-color: red; */
+    }
+    footer,.about,.about-items{
+        flex-direction: column;
+        padding: 20px;
+    }
+    .footer-column,{
+        width: 100%;
+    }
+    .skills-container , .skills>p{
+        padding: 30px;
+        margin: 0;
+    }
+    .skill {
+        width: calc(100% - 60px);
+        height: auto;
+    }
+}
