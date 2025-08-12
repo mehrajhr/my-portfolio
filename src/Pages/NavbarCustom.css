@@ -1,0 +1,64 @@
+/* NavbarCustom.css */
+
+/* Resume button base style */
+.resume-btn {
+  padding-left: 1.25rem; /* px-5 */
+  padding-right: 1.25rem;
+  padding-top: 0.5rem; /* py-2 */
+  padding-bottom: 0.5rem;
+  border-radius: 0.5rem; /* rounded-lg */
+  font-weight: 600; /* font-semibold */
+  transition-property: all;
+  transition-duration: 300ms;
+  background: var(--color-primary);
+  color: var(--color-base-100);
+  box-shadow: 0 4px 6px rgba(3, 4, 94, 0.5);
+}
+
+/* Resume button hover */
+.resume-btn:hover {
+  background: var(--color-secondary);
+  box-shadow: 0 6px 8px rgba(2, 62, 138, 0.7);
+}
+
+/* Dark mode override */
+[data-theme="dark"] .resume-btn {
+  background: var(--color-base-100);
+  color: var(--color-primary);
+  box-shadow: 0 4px 6px rgba(202, 235, 102, 0.7);
+}
+
+[data-theme="dark"] .resume-btn:hover {
+  background: var(--color-accent);
+  color: var(--color-base-100);
+  box-shadow: 0 6px 8px rgba(72, 202, 228, 0.8);
+}
+
+/* Nav link active state */
+.nav-link {
+  cursor: pointer;
+  transition-property: color;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+  color: var(--color-primary);
+  padding: 0.25rem 0.5rem;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--color-secondary);
+}
+
+.nav-link.active {
+  color: var(--color-secondary);
+  border-bottom-color: var(--color-secondary);
+  font-weight: 700;
+}
+
+/* Mobile menu nav link spacing */
+@media (max-width: 1023px) {
+  .nav-link {
+    display: block;
+    padding: 0.75rem 1rem;
+  }
+}

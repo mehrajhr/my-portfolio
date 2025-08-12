@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: dark --default, light;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+
+  --color-primary: #03045E;
+  --color-secondary: #023E8A;
+  --color-accent: #0077B6;
+  --color-info: #0096C7;
+  --color-success: #00B4D8;
+  --color-warning: #48CAE4;
+  --color-error: #90E0EF;
+  --color-base-100: #CAF0F8;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+
+  --color-primary: #CAF0F8;
+  --color-secondary: #90E0EF;
+  --color-accent: #48CAE4;
+  --color-info: #00B4D8;
+  --color-success: #0096C7;
+  --color-warning: #0077B6;
+  --color-error: #023E8A;
+  --color-base-100: #03045E;
+}
+
+
+.font-roboto-mono{
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
