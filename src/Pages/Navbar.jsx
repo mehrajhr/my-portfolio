@@ -5,7 +5,7 @@ import { Link as ScrollLink } from "react-scroll";
 import resume from "../assets/Mehraj hasan riaj.pdf";
 
 const Navbar = () => {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
