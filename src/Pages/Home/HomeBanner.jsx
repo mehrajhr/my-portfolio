@@ -92,7 +92,7 @@ const HomeBanner = () => {
       >
         <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-primary shadow-xl">
           <img
-            src="https://i.ibb.co.com/SwMCqgx8/transparent-Photoroom.jpg"
+            src="https://i.ibb.co.com/NgYwdQZz/transparent-Photoroom.webp"
             alt="Mehraj Hasan Riaj"
             className="object-cover w-full h-full"
           />

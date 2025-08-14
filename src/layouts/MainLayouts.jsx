@@ -2,6 +2,7 @@ import React from "react";
 import Home from "../Pages/Home/Home";
 import Navbar from "../Pages/Navbar";
 import About from "../Pages/About/About";
+import Projects from "../Pages/Projects/Projects";
 
 const MainLayouts = () => {
   return (
@@ -14,10 +15,10 @@ const MainLayouts = () => {
         <section id="about" className="my-6">
           <About></About>
         </section>
-        {/* <section id="projects">
-          <Projects />
+        <section id="projects">
+          <Projects></Projects>
         </section>
-        <section id="contact">
+        {/* <section id="contact">
           <Contact />
         </section> */}
       </main>
