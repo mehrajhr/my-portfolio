@@ -4,6 +4,7 @@ import Navbar from "../Pages/Navbar";
 import About from "../Pages/About/About";
 import Projects from "../Pages/Projects/Projects";
 import Skills from "../Pages/Skills/Skills";
+import Education from "../Pages/Educarion/Education";
 
 const MainLayouts = () => {
   return (
@@ -21,6 +22,9 @@ const MainLayouts = () => {
         </section>
         <section id="skills" className="my-6">
           <Skills></Skills>
+        </section>
+        <section id="educarion" className="my-6">
+          <Education></Education>
         </section>
         {/* <section id="contact">
           <Contact />
