@@ -5,6 +5,7 @@ import About from "../Pages/About/About";
 import Projects from "../Pages/Projects/Projects";
 import Skills from "../Pages/Skills/Skills";
 import Education from "../Pages/Educarion/Education";
+import Contact from "../Pages/Contact/Contact";
 
 const MainLayouts = () => {
   return (
@@ -26,9 +27,9 @@ const MainLayouts = () => {
         <section id="educarion" className="my-6">
           <Education></Education>
         </section>
-        {/* <section id="contact">
-          <Contact />
-        </section> */}
+        <section id="contact">
+          <Contact></Contact>
+        </section>
       </main>
     </div>
   );

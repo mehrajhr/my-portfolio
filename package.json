@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.1.11",
     "daisyui": "^5.0.50",
+    "emailjs-com": "^3.2.0",
     "firebase": "^12.1.0",
     "framer-motion": "^12.23.12",
     "react": "^19.1.1",
