@@ -9,7 +9,7 @@ import Contact from "../Pages/Contact/Contact";
 
 const MainLayouts = () => {
   return (
-    <div className="font-roboto-mono">
+    <div className="font-roboto-mono max-w-7xl mx-auto">
       <Navbar></Navbar>
       <main className="max-w-11/12 mx-auto my-6">
         <section id="home">

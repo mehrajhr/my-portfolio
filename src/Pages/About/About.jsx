@@ -56,12 +56,14 @@ const About = () => {
               "Express.js",
               "MongoDB",
               "JavaScript",
+              "C",
+              "C++",
               "Tailwind CSS",
               "DaisyUI",
             ].map((skill, index) => (
               <span
                 key={index}
-                className="px-4 py-2 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-content rounded-full border border-primary/30 text-sm font-medium hover:bg-primary hover:text-white transition duration-300"
+                className="px-4 py-2 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-content rounded-full border border-primary/30 text-sm font-medium hover:bg-primary hover:text-[#00B4D8] transition duration-300"
               >
                 {skill}
               </span>
