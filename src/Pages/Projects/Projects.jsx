@@ -1,7 +1,22 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaReact, FaNodeJs, FaGithub, FaHtml5, FaCss3Alt, FaJs, FaExternalLinkAlt } from "react-icons/fa";
-import { SiTailwindcss, SiFirebase, SiMongodb, SiExpress, SiDaisyui, SiStripe } from "react-icons/si";
+import {
+  FaReact,
+  FaNodeJs,
+  FaGithub,
+  FaHtml5,
+  FaCss3Alt,
+  FaJs,
+  FaExternalLinkAlt,
+} from "react-icons/fa";
+import {
+  SiTailwindcss,
+  SiFirebase,
+  SiMongodb,
+  SiExpress,
+  SiDaisyui,
+  SiStripe,
+} from "react-icons/si";
 
 const techIcons = {
   React: <FaReact className="text-primary" />,
@@ -19,22 +34,56 @@ const techIcons = {
 
 const projects = [
   {
-    title: "FitArena",
-    description:
-      "A sports event booking platform connecting athletes and enthusiasts with local events.",
-    img: "https://i.ibb.co.com/pBSQ3Wvy/image.png",
-    tech: ["React", "Node.js", "MongoDB", "Express", "Firebase", "Tailwind", "DaisyUI"],
-    live: "https://fit-arena-6de23.web.app/",
-    github: "https://github.com/mehrajhr/fitarena-client-side",
-  },
-  {
     title: "Knowloop",
     description:
       "Collaborative study platform connecting students and tutors with session scheduling, material sharing, and payment integration.",
     img: "https://i.ibb.co.com/CKMdpx8w/image.png",
-    tech: ["React", "Node.js", "MongoDB", "Express", "Firebase", "Tailwind", "DaisyUI", "Stripe"],
+    tech: [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Express",
+      "Firebase",
+      "Tailwind",
+      "DaisyUI",
+      "Stripe",
+    ],
     live: "https://know-loop.web.app/",
     github: "https://github.com/mehrajhr/knowloop-client",
+  },
+  {
+    title: "FitArena",
+    description:
+      "A sports event booking platform connecting athletes and enthusiasts with local events.",
+    img: "https://i.ibb.co.com/pBSQ3Wvy/image.png",
+    tech: [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Express",
+      "Firebase",
+      "Tailwind",
+      "DaisyUI",
+    ],
+    live: "https://fit-arena-6de23.web.app/",
+    github: "https://github.com/mehrajhr/fitarena-client-side",
+  },
+  {
+    title: "Zaffro",
+    description:
+      "Zaffro, A full-stack e-commerce platform for an online clothing brand, featuring product management, secure checkout, inventory control, and a responsive shopping experience.",
+    img: "https://i.ibb.co.com/Gfh5MWjY/Screenshot-2025-10-09-020018.png",
+    tech: [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Express",
+      "Firebase",
+      "Tailwind",
+      "DaisyUI",
+    ],
+    live: "https://zaffro.netlify.app/",
+    github: "https://github.com/mehrajhr/zaffro-client",
   },
   {
     title: "Phudu",

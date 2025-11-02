@@ -51,13 +51,14 @@ const About = () => {
           {/* Skills */}
           <div className="flex flex-wrap justify-center md:justify-start gap-3">
             {[
+              "JavaScript",
+              "C",
+              "C++",
+              "C#",
               "React.js",
               "Node.js",
               "Express.js",
               "MongoDB",
-              "JavaScript",
-              "C",
-              "C++",
               "Tailwind CSS",
               "DaisyUI",
             ].map((skill, index) => (
