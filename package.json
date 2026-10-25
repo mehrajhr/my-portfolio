@@ -1,0 +1,16 @@
+{
+  "name": "my-portfolio-cms",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "db:generate": "pnpm --filter @portfolio/api db:generate",
+    "db:migrate": "pnpm --filter @portfolio/api db:migrate",
+    "db:seed": "pnpm --filter @portfolio/api db:seed",
+    "db:deploy": "pnpm --filter @portfolio/api db:deploy"
+  },
+  "devDependencies": { "turbo": "^2.5.0", "typescript": "^5.8.0" }
+}

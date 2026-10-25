@@ -1,0 +1,1 @@
+ALTER TABLE "SeoSettings" ADD COLUMN "faviconUrl" TEXT NOT NULL DEFAULT '';

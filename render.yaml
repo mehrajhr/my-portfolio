@@ -1,0 +1,55 @@
+services:
+  - type: web
+    name: mehraj-portfolio-api
+    runtime: node
+    plan: free
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @portfolio/api exec prisma generate && pnpm --filter @portfolio/api build
+    preDeployCommand: pnpm --filter @portfolio/api exec prisma migrate deploy
+    startCommand: pnpm --filter @portfolio/api start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: OWNER_EMAIL
+        sync: false
+      - key: OWNER_PASSWORD
+        sync: false
+      - key: WEB_ORIGIN
+        fromService:
+          type: web
+          name: mehraj-portfolio-web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CONTACT_EMAIL
+        value: mehrajhasanriajcse@gmail.com
+
+  - type: web
+    name: mehraj-portfolio-web
+    runtime: node
+    plan: free
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @portfolio/web exec next build
+    startCommand: pnpm --filter @portfolio/web exec next start --hostname 0.0.0.0 --port $PORT
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SITE_URL
+        fromService:
+          type: web
+          name: mehraj-portfolio-web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: mehraj-portfolio-api
+          envVarKey: RENDER_EXTERNAL_URL

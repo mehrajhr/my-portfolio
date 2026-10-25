@@ -1,0 +1,8 @@
+{
+  "name": "@portfolio/web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "dev": "dotenv -e ../../.env -- next dev", "build": "dotenv -e ../../.env -- next build", "start": "dotenv -e ../../.env -- next start", "lint": "tsc --noEmit", "typecheck": "tsc --noEmit" },
+  "dependencies": { "@portfolio/contracts": "workspace:*", "next": "^15.2.0", "react": "^19.0.0", "react-dom": "^19.0.0", "zod": "^3.24.0" },
+  "devDependencies": { "@types/node": "^22.13.0", "@types/react": "^19.0.0", "@types/react-dom": "^19.0.0", "typescript": "^5.8.0", "dotenv-cli": "^8.0.0" }
+}
