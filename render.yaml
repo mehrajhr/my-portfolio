@@ -3,8 +3,7 @@ services:
     name: mehraj-portfolio-api
     runtime: node
     plan: free
-    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @portfolio/api exec prisma generate && pnpm --filter @portfolio/api build
-    preDeployCommand: pnpm --filter @portfolio/api exec prisma migrate deploy
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm --filter @portfolio/api exec prisma generate && pnpm --filter @portfolio/api exec prisma migrate deploy && pnpm --filter @portfolio/api build
     startCommand: pnpm --filter @portfolio/api start
     healthCheckPath: /health
     envVars:
@@ -38,7 +37,7 @@ services:
     name: mehraj-portfolio-web
     runtime: node
     plan: free
-    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @portfolio/web exec next build
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm --filter @portfolio/web exec next build
     startCommand: pnpm --filter @portfolio/web exec next start --hostname 0.0.0.0 --port $PORT
     envVars:
       - key: NODE_ENV
