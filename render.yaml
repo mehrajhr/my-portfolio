@@ -47,7 +47,7 @@ services:
           type: web
           name: mehraj-portfolio-web
           envVarKey: RENDER_EXTERNAL_URL
-      - key: NEXT_PUBLIC_API_URL
+      - key: API_PROXY_TARGET
         fromService:
           type: web
           name: mehraj-portfolio-api

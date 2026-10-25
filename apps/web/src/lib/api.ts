@@ -1,6 +1,5 @@
-const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api/v1";
-const normalizedApiUrl = configuredApiUrl.replace(/\/$/, "");
-export const API = normalizedApiUrl.endsWith("/api/v1") ? normalizedApiUrl : `${normalizedApiUrl}/api/v1`;
+// Browser requests stay on the portfolio's origin so auth cookies remain first-party.
+export const API = "/api/v1";
 
 export function csrfToken() {
   if (typeof document === "undefined") return "";

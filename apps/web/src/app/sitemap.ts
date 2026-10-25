@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
-import { API } from "@/lib/api";
+import { SERVER_API } from "@/lib/server-api";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const site = process.env.SITE_URL ?? "http://localhost:3000";
   let projects: { slug: string; updatedAt?: string }[] = [];
   try {
-    const response = await fetch(`${API}/projects?limit=48`, {
+    const response = await fetch(`${SERVER_API}/projects?limit=48`, {
       next: { revalidate: 3600 },
     });
     if (response.ok) projects = (await response.json()).items;

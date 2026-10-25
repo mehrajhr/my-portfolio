@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
-import { API } from "@/lib/api";
+import { SERVER_API } from "@/lib/server-api";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const response = await fetch(`${API}/seo`, { cache: "no-store" });
+    const response = await fetch(`${SERVER_API}/seo`, { cache: "no-store" });
     if (response.ok) {
       const seo = await response.json();
       return {
