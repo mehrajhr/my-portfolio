@@ -9,7 +9,12 @@ import cookieParser from "cookie-parser";
 import { rateLimit } from "express-rate-limit";
 import { PrismaClient, ProjectStatus } from "@prisma/client";
 import argon2 from "argon2";
-import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import {
+  createHash,
+  createHmac,
+  randomBytes,
+  timingSafeEqual,
+} from "node:crypto";
 import {
   categoryInput,
   profileInput,
@@ -17,6 +22,13 @@ import {
   technologyInput,
 } from "@portfolio/contracts";
 
+if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
+if (
+  process.env.NODE_ENV === "production" &&
+  (process.env.SESSION_SECRET?.length ?? 0) < 32
+) {
+  throw new Error("SESSION_SECRET must contain at least 32 characters in production");
+}
 const prisma = new PrismaClient();
 const SESSION = "portfolio_session";
 const COOKIE_SECURE = process.env.NODE_ENV === "production";
@@ -859,6 +871,53 @@ api.delete("/admin/social-links/:id", ...owner, async (req, res) => {
   await prisma.socialLink.delete({ where: { id: String(req.params.id) } });
   res.status(204).end();
 });
+api.post("/admin/media/upload-signature", ...owner, async (req, res) => {
+  const cloud = process.env.CLOUDINARY_CLOUD_NAME?.trim();
+  const apiKey = process.env.CLOUDINARY_API_KEY?.trim();
+  const apiSecret = process.env.CLOUDINARY_API_SECRET?.trim();
+  if (!cloud || !apiKey || !apiSecret)
+    return res.status(503).json({
+      error: {
+        code: "MEDIA_NOT_CONFIGURED",
+        message: "Configure Cloudinary credentials in the API environment to enable uploads",
+      },
+    });
+
+  const mimeType = typeof req.body?.mimeType === "string" ? req.body.mimeType : "";
+  const filename = typeof req.body?.filename === "string" ? req.body.filename : "";
+  const kind = mimeType === "application/pdf"
+    ? "pdf"
+    : mimeType.startsWith("image/")
+      ? "image"
+      : "";
+  if (!kind || !filename.trim() || (kind === "pdf" && !filename.toLowerCase().endsWith(".pdf")))
+    return res.status(400).json({
+      error: { code: "VALIDATION", message: "Choose a valid image or PDF file" },
+    });
+
+  const sizeBytes = Number(req.body?.sizeBytes);
+  const maxBytes = kind === "pdf" ? 15 * 1024 * 1024 : 5 * 1024 * 1024;
+  if (!Number.isFinite(sizeBytes) || sizeBytes <= 0 || sizeBytes > maxBytes)
+    return res.status(400).json({
+      error: {
+        code: "VALIDATION",
+        message: kind === "pdf" ? "PDF files must be 15 MB or smaller" : "Images must be 5 MB or smaller",
+      },
+    });
+
+  const signatureAlgorithm = process.env.CLOUDINARY_SIGNATURE_ALGORITHM?.trim().toLowerCase() || "sha1";
+  if (signatureAlgorithm !== "sha1" && signatureAlgorithm !== "sha256")
+    return res.status(500).json({ error: { code: "MEDIA_CONFIGURATION", message: "Cloudinary signature algorithm must be sha1 or sha256" } });
+  const timestamp = Math.floor(Date.now() / 1000);
+  const resourceType = kind === "pdf" ? "raw" : "image";
+  const publicId = `portfolio-${randomBytes(18).toString("hex")}${kind === "pdf" ? ".pdf" : ""}`;
+  const signedParams = `folder=portfolio&public_id=${publicId}&timestamp=${timestamp}`;
+  const signature = createHash(signatureAlgorithm)
+    .update(`${signedParams}${apiSecret}`)
+    .digest("hex");
+
+  res.json({ cloudName: cloud, apiKey, timestamp, signature, folder: "portfolio", publicId, resourceType });
+});
 api.post("/admin/media/upload", ...owner, async (req, res) => {
   const cloud = process.env.CLOUDINARY_CLOUD_NAME?.trim();
   const apiKey = process.env.CLOUDINARY_API_KEY?.trim();
@@ -1275,3 +1334,5 @@ app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
 export function createApp() {
   return app;
 }
+
+export default app;

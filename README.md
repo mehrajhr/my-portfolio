@@ -13,7 +13,7 @@ Full-stack single-owner portfolio: Next.js public site and admin, Express API, P
 
 The API runs on port 4000. Public reads expose published content only. There is no public registration route. See app package scripts for individual commands.
 
-For profile photos, project covers, and résumé PDF uploads, add the cloud name, API key, and API secret from the same Cloudinary product environment to `.env`. Uploads pass through the authenticated API server, which keeps the Cloudinary secret private and authenticates directly with Cloudinary. Restart the API after changing credentials. Image and résumé URLs can also be entered directly. After upload, review the file preview and save the profile to publish it on the homepage.
+For profile photos, project covers, and résumé PDF uploads, add the cloud name, API key, and API secret from the same Cloudinary product environment to `.env`. The authenticated API signs each upload and the browser sends the file directly to Cloudinary, keeping the API secret private and avoiding serverless request-size limits. Set `CLOUDINARY_SIGNATURE_ALGORITHM=sha256` only if your Cloudinary environment requires SHA-256; otherwise leave it as `sha1`.
 
 Cloudinary Free accounts block PDF delivery by default. To make the résumé download work, open the Cloudinary Console's **Settings → Security**, enable **Allow delivery of PDF and ZIP files**, and save the product environment settings.
 
@@ -21,25 +21,71 @@ To deliver contact form messages to `CONTACT_EMAIL` (defaults to `mehrajhasanria
 
 Use `pnpm db:deploy` to apply checked-in migrations in a deployment environment; `pnpm db:migrate` is for local schema development.
 
-## Free deployment (Render + Neon)
+## Deploy to Vercel
 
-The repository includes `render.yaml` for two free Render web services (Next.js and the API). Use Neon for PostgreSQL rather than Render's free Postgres, which expires after 30 days. Free Render services sleep after 15 minutes idle, so the first request after a quiet period can take around a minute. This is suitable for a personal portfolio with light traffic, but not an always-on production service. See [Render's free instance limits](https://render.com/docs/free) and [Neon's free plan limits](https://neon.com/docs/introduction/plans).
+This is a pnpm monorepo, so create **two Vercel projects from the same GitHub repository**. The web project runs Next.js and the API project runs the Express app as a Vercel Function. Use Neon (or another hosted PostgreSQL provider) for the database. Vercel Functions scale down when idle; Fluid Compute can reduce cold starts, but Vercel does not provide a permanently running free API server.
 
-1. Push this repository to GitHub and create a free Neon project. Copy its **direct** PostgreSQL connection string and ensure it includes SSL (`sslmode=require`); the migration command should not use the pooled endpoint.
-2. In Render, choose **New → Blueprint**, connect this repository, and deploy the `render.yaml` Blueprint. Render creates `mehraj-portfolio-web` and `mehraj-portfolio-api` services. Enter the requested `DATABASE_URL`, `OWNER_EMAIL`, `OWNER_PASSWORD`, and Cloudinary/Resend credentials during setup (or add them in the API service's Environment settings). Choose a strong owner password of at least 12 characters.
-3. `CONTACT_EMAIL` defaults to `mehrajhasanriajcse@gmail.com`. Keep credentials and secrets in Render, never in source control.
-4. The Blueprint links the generated URLs. The web app proxies browser API requests through its own `/api/v1` path, keeping admin session cookies first-party; `API_PROXY_TARGET` points the web server at the API. `SITE_URL` is linked to the web URL for sitemap and robots metadata. If you later change either service's URL, sync/redeploy the Blueprint and redeploy the web service because these values are used at build time.
-5. On Render's free plan, the API build command applies `prisma migrate deploy` against Neon. After the first deploy completes, seed the owner account once from your local PowerShell terminal with the API environment loaded:
+### 1. Prepare the database and repository
+
+1. Push the latest code to GitHub and make sure your hosted PostgreSQL database is reachable. For Neon, use the pooled connection URL for the Vercel API runtime (usually the hostname containing `-pooler`) and keep the direct URL for migrations. Both URLs should use SSL (`sslmode=require`); never publish either in the repository.
+2. If this database has not been initialized, apply migrations once from PowerShell at the repository root:
 
    ```powershell
-   $env:DATABASE_URL = "<Neon connection string>"
+   $env:DATABASE_URL = "<your direct hosted PostgreSQL URL>"
+   pnpm --filter @portfolio/api exec prisma migrate deploy
+   Remove-Item Env:DATABASE_URL
+   ```
+
+   The current Neon database already contains your owner, so reuse the same email and password when you deploy it. If you need to create or reset the owner, run the seed command below; it updates the password for that email:
+
+   ```powershell
+   $env:DATABASE_URL = "<your direct hosted PostgreSQL URL>"
    $env:OWNER_EMAIL = "<your admin email>"
    $env:OWNER_PASSWORD = "<your strong password>"
    pnpm --filter @portfolio/api exec tsx prisma/seed.ts
    Remove-Item Env:DATABASE_URL, Env:OWNER_EMAIL, Env:OWNER_PASSWORD
    ```
 
-   Run that command from the repository root. It uses the same Neon database as the deployed API; do not run `db:seed` with the local `.env` unless it points to that hosted database.
-6. In Resend, verify your recipient email to test delivery using `onboarding@resend.dev`. Without a domain, Resend's test sender is restricted to verified recipients; sending to arbitrary recipients requires a verified domain.
+### 2. Deploy the API project
 
-The Render build commands deliberately bypass the local `.env`-loading scripts. Render injects environment variables directly into each build and service process.
+1. In Vercel, **Add New → Project**, import this repository, and set **Root Directory** to `apps/api`.
+2. In Project Settings → Build and Development Settings, set the Build Command to `pnpm run vercel-build`. Keep the detected pnpm install command. Enable **Include source files outside of the Root Directory** so Vercel can access the shared `packages/contracts` workspace.
+3. Add these API project environment variables for Production (and Preview too, if you want preview deployments to work):
+
+   | Variable | Value |
+   | --- | --- |
+   | `NODE_ENV` | `production` |
+   | `DATABASE_URL` | Hosted PostgreSQL connection string |
+   | `SESSION_SECRET` | Random secret with at least 32 characters |
+   | `OWNER_EMAIL` | Your admin email |
+   | `OWNER_PASSWORD` | Your owner password |
+   | `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name |
+   | `CLOUDINARY_API_KEY` | Cloudinary API key |
+   | `CLOUDINARY_API_SECRET` | Cloudinary API secret |
+   | `CLOUDINARY_SIGNATURE_ALGORITHM` | `sha1`, or `sha256` if required by your Cloudinary account |
+   | `RESEND_API_KEY` | Resend API key (optional if contact email delivery is not enabled) |
+   | `CONTACT_EMAIL` | `mehrajhasanriajcse@gmail.com` |
+   | `EMAIL_FROM` | `Portfolio <onboarding@resend.dev>` or your verified sender |
+   | `WEB_ORIGIN` | Add the frontend's Vercel URL after step 3 |
+
+4. Deploy. The API URL should respond at `/health` with `{"ok":true}`.
+
+### 3. Deploy the web project
+
+1. Add another Vercel project using the same repository and set **Root Directory** to `apps/web`. Enable **Include source files outside of the Root Directory** here too.
+2. Set the Build Command to `pnpm exec next build`; leave the detected pnpm install command.
+3. Add these web project environment variables:
+
+   | Variable | Value |
+   | --- | --- |
+   | `API_PROXY_TARGET` | Full API project URL, such as `https://your-api.vercel.app` |
+   | `SITE_URL` | Full web project URL, such as `https://your-portfolio.vercel.app` |
+
+4. Deploy the web project, then set the API project's `WEB_ORIGIN` to the web project's URL and redeploy the API. The web app proxies browser calls through `/api/v1`, so admin session cookies stay on the portfolio's own origin.
+5. In Vercel, assign your custom domain to the web project when you have one. Update `SITE_URL` and the API's `WEB_ORIGIN` to match it, then redeploy both projects.
+
+### 4. Verify the deployed portfolio
+
+Open the web URL, confirm public sections load, sign in at `/login`, and test one image or résumé upload and one contact message. Configure Resend's verified recipient when using its test sender; sending email to arbitrary recipients requires a verified sending domain. Keep all API secrets in Vercel's Environment Variables, never in source control.
+
+Vercel deploys each project independently. After changing an environment variable, redeploy the project that uses it. Removing `render.yaml` from this repository does not delete any existing Render services or Blueprint; remove those separately from the Render dashboard after Vercel is working.
