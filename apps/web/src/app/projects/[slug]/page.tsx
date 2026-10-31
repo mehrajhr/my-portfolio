@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { ThemeControl } from "@/components/theme-provider";
+import { SiteHeader } from "@/components/site-header";
 
 export default function ProjectDetailPage() {
   const params = useParams<{ slug: string }>();
@@ -31,18 +31,15 @@ export default function ProjectDetailPage() {
   }, [params.slug]);
   return (
     <div className="portfolio-shell">
-      <header className="site-header">
-        <div className="container header-inner">
-          <Link className="brand" href="/">
-            Home
-          </Link>
-          <nav className="main-nav">
-            <Link href="/projects">All projects</Link>
-            <ThemeControl />
-            <a href="/#contact">Contact</a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader
+        links={[
+          { label: "About", href: "/#about" },
+          { label: "Skills", href: "/#skills" },
+          { label: "All projects", href: "/projects" },
+          { label: "Education", href: "/#education" },
+          { label: "Certificates", href: "/#achievements" },
+        ]}
+      />
       <main className="container project-detail">
         {loading ? (
           <ProjectDetailSkeleton />

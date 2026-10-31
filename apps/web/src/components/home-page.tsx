@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { api, API } from "@/lib/api";
-import { ThemeControl } from "@/components/theme-provider";
 import { PortfolioLoader } from "@/components/portfolio-loader";
+import { SiteHeader } from "@/components/site-header";
 
 type HomeData = {
   sections: { key: string; title: string; sortOrder: number }[];
@@ -350,32 +350,25 @@ export default function HomePage() {
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
-      <header className="site-header">
-        <div className="container header-inner">
-          <Link className="brand" href="/">
-            {profile?.name || "PORTFOLIO"}
-            <span className="brand-dot">.</span>
-          </Link>
-          <nav className="main-nav" aria-label="Main navigation">
-            <a href="/#about">About</a>
-            <a href="/#skills">Skills</a>
-            <a href="/#work">Projects</a>
-            {data?.sections.some((s) => s.key === "experience") && (
-              <a href="/#experience">Experience</a>
-            )}
-            {data?.sections.some((s) => s.key === "education") &&
-              data.education.length > 0 && <a href="/#education">Education</a>}
-            {data?.sections.some((s) => s.key === "achievements") &&
-              data.achievements.length > 0 && (
-                <a href="/#achievements">Certificates</a>
-              )}
-            <ThemeControl />
-            <a className="nav-contact" href="/#contact">
-              Let’s talk <Icon name="arrow" />
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader
+        brandName={profile?.name || "PORTFOLIO"}
+        links={[
+          { label: "About", href: "/#about" },
+          { label: "Skills", href: "/#skills" },
+          { label: "Projects", href: "/#work" },
+          ...(data?.sections.some((s) => s.key === "experience")
+            ? [{ label: "Experience", href: "/#experience" }]
+            : []),
+          ...(data?.sections.some((s) => s.key === "education") &&
+          data.education.length > 0
+            ? [{ label: "Education", href: "/#education" }]
+            : []),
+          ...(data?.sections.some((s) => s.key === "achievements") &&
+          data.achievements.length > 0
+            ? [{ label: "Certificates", href: "/#achievements" }]
+            : []),
+        ]}
+      />
       <main id="main-content" className="container">
         {!data && !error && <PortfolioLoader />}
         {error && (

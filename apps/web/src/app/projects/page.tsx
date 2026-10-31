@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { ProjectCard } from "@/components/home-page";
-import { ThemeControl } from "@/components/theme-provider";
 import { PortfolioLoader } from "@/components/portfolio-loader";
+import { SiteHeader } from "@/components/site-header";
 
 export default function ProjectsPage() {
   const [items, setItems] = useState<any[]>([]);
@@ -43,21 +43,7 @@ export default function ProjectsPage() {
   }, [search, category]);
   return (
     <div className="portfolio-shell">
-      <header className="site-header">
-        <div className="container header-inner">
-          <Link className="brand" href="/">
-            Home
-          </Link>
-          <nav className="main-nav">
-            <Link href="/#about">About</Link>
-            <Link href="/#skills">Skills</Link>
-            <ThemeControl />
-            <a className="nav-contact" href="/#contact">
-              Let’s talk ↗
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
       <main className="container project-detail">
         <div className="section-kicker">
           <span>PROJECT ARCHIVE</span>
