@@ -73,12 +73,6 @@ export default function HomePage() {
                 {profile.bio ||
                   "Add a few lines about your background, how you approach engineering, and the problems you enjoy solving."}
               </p>
-              {profile.location && (
-                <p className="location-line">
-                  <Icon name="pin" />
-                  {profile.location}
-                </p>
-              )}
             </div>
           </section>
         ),
